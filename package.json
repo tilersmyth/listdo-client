@@ -1,0 +1,33 @@
+{
+  "name": "with-typescript",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next -p 8080",
+    "build": "next build",
+    "start": "next start -p 8080",
+    "type-check": "tsc"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.4.3",
+    "apollo-link-context": "^1.0.18",
+    "apollo-link-http": "^1.5.15",
+    "cookie": "^0.4.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^9.0.1",
+    "react": "^16.8.6",
+    "react-apollo": "^2.5.8",
+    "react-dom": "^16.8.6",
+    "remove": "^0.1.5"
+  },
+  "devDependencies": {
+    "@types/cookie": "^0.3.3",
+    "@types/graphql": "^14.2.2",
+    "@types/http-proxy-agent": "^2.0.1",
+    "@types/node": "^11.13.9",
+    "@types/react": "^16.8.15",
+    "@types/react-dom": "^16.0.11",
+    "graphql": "^14.4.2",
+    "typescript": "3.5.2"
+  },
+  "license": "ISC"
+}
