@@ -2,8 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { NextPage } from "next";
-import { Mutation } from "react-apollo";
-import { gql } from "apollo-boost";
+import { LoginComponent } from "../generated/apolloComponents";
 
 const IndexPage: NextPage = () => {
   return (
@@ -14,29 +13,23 @@ const IndexPage: NextPage = () => {
           <a>About</a>
         </Link>
       </p>
-      <Mutation
-        mutation={gql`
-          mutation {
-            login(
-              input: { email: "tyler.smith.la@gmail.com", password: "test" }
-            ) {
-              path
-              message
-            }
-          }
-        `}
-      >
-        {(mutate: any) => (
+      <LoginComponent>
+        {mutate => (
           <button
             onClick={async () => {
-              const response = await mutate();
+              const response = await mutate({
+                variables: {
+                  email: "tyler.smith.la@gmail.com",
+                  password: "test"
+                }
+              });
               console.log(response);
             }}
           >
             call login mutation
           </button>
         )}
-      </Mutation>
+      </LoginComponent>
     </Layout>
   );
 };

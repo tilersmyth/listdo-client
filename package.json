@@ -5,7 +5,8 @@
     "dev": "next -p 8080",
     "build": "next build",
     "start": "next start -p 8080",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "apollo-boost": "^0.4.3",
@@ -20,6 +21,10 @@
     "remove": "^0.1.5"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.4.0",
+    "@graphql-codegen/typescript": "1.4.0",
+    "@graphql-codegen/typescript-operations": "^1.4.0",
+    "@graphql-codegen/typescript-react-apollo": "^1.4.0",
     "@types/cookie": "^0.3.3",
     "@types/graphql": "^14.2.2",
     "@types/http-proxy-agent": "^2.0.1",
