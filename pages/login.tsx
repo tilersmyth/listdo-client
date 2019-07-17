@@ -1,23 +1,25 @@
 import * as React from "react";
 import { Formik, Field } from "formik";
-
 import Link from "next/link";
+import Router from "next/router";
+
 import Layout from "../components/Layout";
 import { InputField } from "../components/fields/inputField";
-import { RegisterComponent } from "../generated/apolloComponents";
-import { RegisterSchema } from "../utils/yup-validation";
+import { LoginComponent } from "../generated/apolloComponents";
+import { LoginSchema } from "../utils/yup-validation";
 
-const RegisterPage: React.FunctionComponent = () => (
-  <Layout title="Register">
-    <h1>Register page</h1>
-    <RegisterComponent>
-      {register => (
+const LoginPage: React.FunctionComponent = () => (
+  <Layout title="Login">
+    <h1>Login page</h1>
+    <LoginComponent>
+      {login => (
         <Formik
           validateOnBlur={false}
           validateOnChange={false}
           onSubmit={async (data, { setErrors }) => {
             try {
-              await register({ variables: data });
+              await login({ variables: data });
+              Router.push("/user");
             } catch (err) {
               const errors: { [key: string]: string } = {};
               const { extensions } = err.graphQLErrors[0];
@@ -33,7 +35,7 @@ const RegisterPage: React.FunctionComponent = () => (
             email: "",
             password: ""
           }}
-          validationSchema={RegisterSchema}
+          validationSchema={LoginSchema}
         >
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
@@ -48,12 +50,13 @@ const RegisterPage: React.FunctionComponent = () => (
                 type="password"
                 component={InputField}
               ></Field>
-              <button type="submit">Register</button>
+
+              <button type="submit">Login</button>
             </form>
           )}
         </Formik>
       )}
-    </RegisterComponent>
+    </LoginComponent>
     <p>
       <Link href="/">
         <a>Go home</a>
@@ -62,4 +65,4 @@ const RegisterPage: React.FunctionComponent = () => (
   </Layout>
 );
 
-export default RegisterPage;
+export default LoginPage;

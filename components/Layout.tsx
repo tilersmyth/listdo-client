@@ -30,6 +30,10 @@ const Layout: React.FunctionComponent<Props> = ({
           <a>Register</a>
         </Link>{" "}
         |{" "}
+        <Link href="/login">
+          <a>Login</a>
+        </Link>{" "}
+        |{" "}
         <Link href="/initial-props">
           <a>With Initial Props</a>
         </Link>

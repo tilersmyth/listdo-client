@@ -23,7 +23,7 @@ if (!isBrowser) {
 
 function create(initialState: any, { getToken, fetchOptions }: Options) {
   const httpLink = createHttpLink({
-    uri: "http://localhost:3000/graphql",
+    uri: "http://localhost:4000/graphql",
     credentials: "include",
     fetchOptions
   });
