@@ -12,9 +12,23 @@ const RegisterPage: React.FunctionComponent = () => (
     <RegisterComponent>
       {register => (
         <Formik
-          onSubmit={async data => {
-            const response = await register({ variables: data });
-            console.log(response);
+          validateOnBlur={false}
+          validateOnChange={false}
+          onSubmit={async (data, { setErrors }) => {
+            try {
+              const response = await register({ variables: data });
+              console.log(response);
+            } catch (err) {
+              const errors: { [key: string]: string } = {};
+              const { extensions } = err.graphQLErrors[0];
+              Object.values(extensions.exception.errors).forEach(
+                (error: any) => {
+                  errors[error.path] = error.message;
+                }
+              );
+              console.log(errors);
+              setErrors(errors);
+            }
           }}
           initialValues={{
             email: "",

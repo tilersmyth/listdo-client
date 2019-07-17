@@ -2,7 +2,6 @@ import * as React from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { NextPage } from "next";
-import { LoginComponent } from "../generated/apolloComponents";
 
 const IndexPage: NextPage = () => {
   return (
@@ -13,23 +12,6 @@ const IndexPage: NextPage = () => {
           <a>About</a>
         </Link>
       </p>
-      <LoginComponent>
-        {mutate => (
-          <button
-            onClick={async () => {
-              const response = await mutate({
-                variables: {
-                  email: "tyler.smith.la@gmail.com",
-                  password: "test"
-                }
-              });
-              console.log(response);
-            }}
-          >
-            call login mutation
-          </button>
-        )}
-      </LoginComponent>
     </Layout>
   );
 };
