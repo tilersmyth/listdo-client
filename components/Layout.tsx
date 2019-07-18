@@ -22,8 +22,8 @@ const Layout: React.FunctionComponent<Props> = ({
           <a>Home</a>
         </Link>{" "}
         |{" "}
-        <Link href="/about">
-          <a>About</a>
+        <Link href="/boards">
+          <a>Board</a>
         </Link>{" "}
         |{" "}
         <Link href="/register">

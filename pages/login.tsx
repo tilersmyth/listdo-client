@@ -7,6 +7,7 @@ import Layout from "../components/Layout";
 import { InputField } from "../components/fields/inputField";
 import { LoginComponent } from "../generated/apolloComponents";
 import { LoginSchema } from "../utils/yup-validation";
+import { serverValidationErrors } from "../utils/server-validation-errors";
 
 const LoginPage: React.FunctionComponent = () => (
   <Layout title="Login">
@@ -19,16 +20,10 @@ const LoginPage: React.FunctionComponent = () => (
           onSubmit={async (data, { setErrors }) => {
             try {
               await login({ variables: data });
-              Router.push("/user");
+              Router.push("/boards");
             } catch (err) {
-              const errors: { [key: string]: string } = {};
-              const { extensions } = err.graphQLErrors[0];
-              Object.values(extensions.exception.errors).forEach(
-                (error: any) => {
-                  errors[error.path] = error.message;
-                }
-              );
-              setErrors(errors);
+              const errors = serverValidationErrors(err);
+              errors && setErrors(errors);
             }
           }}
           initialValues={{

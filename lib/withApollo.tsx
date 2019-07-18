@@ -7,6 +7,7 @@ import Head from "next/head";
 import initApollo from "./initApollo";
 import { isBrowser } from "./isBrowser";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
+import redirect from "./redirect";
 
 function parseCookies(req?: any, options = {}) {
   return cookie.parse(
@@ -67,6 +68,10 @@ export default (App: any) => {
           // Handle them in components via the data.error prop:
           // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
           console.error("Error while running `getDataFromTree`", error);
+
+          if (error.graphQLErrors[0].message.statusCode === 403) {
+            redirect(ctx.ctx, "/login");
+          }
         }
 
         // getDataFromTree does not call componentWillUnmount
