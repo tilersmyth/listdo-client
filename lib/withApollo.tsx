@@ -69,7 +69,10 @@ export default (App: any) => {
           // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
           console.error("Error while running `getDataFromTree`", error);
 
-          if (error.graphQLErrors[0].message.statusCode === 403) {
+          if (
+            error.graphQLErrors[0] &&
+            error.graphQLErrors[0].message.statusCode === 403
+          ) {
             redirect(ctx.ctx, "/login");
           }
         }

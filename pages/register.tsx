@@ -1,17 +1,33 @@
 import * as React from "react";
 import { Formik, Field } from "formik";
-import Link from "next/link";
 import Router from "next/router";
+import { Theme, Button } from "@material-ui/core";
+import { StyleRules, withStyles } from "@material-ui/styles";
 
-import Layout from "../components/Layout";
-import { InputField } from "../components/fields/inputField";
+import { InputField } from "../components/fields/InputField";
 import { RegisterComponent } from "../generated/apolloComponents";
 import { RegisterSchema } from "../utils/yup-validation";
 import { serverValidationErrors } from "../utils/server-validation-errors";
+import AuthContainer from "../components/layouts/Auth";
+import Link from "../material/Link";
 
-const RegisterPage: React.FunctionComponent = () => (
-  <Layout title="Register">
-    <h1>Register page</h1>
+interface Props {
+  classes: any;
+}
+
+const styles = (theme: Theme): StyleRules => ({
+  button: {
+    marginTop: theme.spacing(2)
+  },
+  navLink: {
+    display: "block",
+    marginTop: theme.spacing(1),
+    color: theme.palette.grey[500]
+  }
+});
+
+const RegisterPage: React.FunctionComponent<Props> = ({ classes }) => (
+  <AuthContainer label="Register">
     <RegisterComponent>
       {register => (
         <Formik
@@ -20,7 +36,7 @@ const RegisterPage: React.FunctionComponent = () => (
           onSubmit={async (data, { setErrors }) => {
             try {
               await register({ variables: data });
-              Router.push("/boards");
+              Router.push("/login");
             } catch (err) {
               const errors = serverValidationErrors(err);
               errors && setErrors(errors);
@@ -34,29 +50,30 @@ const RegisterPage: React.FunctionComponent = () => (
         >
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
-              <Field
-                name="email"
-                placeholder="E-mail"
-                component={InputField}
-              ></Field>
+              <Field name="email" label="E-mail" component={InputField}></Field>
               <Field
                 name="password"
-                placeholder="Password"
+                label="Password"
                 type="password"
                 component={InputField}
               ></Field>
-              <button type="submit">Register</button>
+              <Button
+                className={classes.button}
+                fullWidth
+                size="large"
+                type="submit"
+              >
+                register
+              </Button>
             </form>
           )}
         </Formik>
       )}
     </RegisterComponent>
-    <p>
-      <Link href="/">
-        <a>Go home</a>
-      </Link>
-    </p>
-  </Layout>
+    <Link href="/login" className={classes.navLink} underline="none">
+      click here to login
+    </Link>
+  </AuthContainer>
 );
 
-export default RegisterPage;
+export default withStyles(styles)(RegisterPage);

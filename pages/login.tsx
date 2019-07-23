@@ -1,17 +1,33 @@
 import * as React from "react";
 import { Formik, Field } from "formik";
-import Link from "next/link";
 import Router from "next/router";
+import { Button } from "@material-ui/core";
+import { withStyles, Theme, StyleRules } from "@material-ui/core/styles";
 
-import Layout from "../components/Layout";
-import { InputField } from "../components/fields/inputField";
+import { InputField } from "../components/fields/InputField";
 import { LoginComponent } from "../generated/apolloComponents";
 import { LoginSchema } from "../utils/yup-validation";
 import { serverValidationErrors } from "../utils/server-validation-errors";
+import AuthContainer from "../components/layouts/Auth";
+import Link from "../material/Link";
 
-const LoginPage: React.FunctionComponent = () => (
-  <Layout title="Login">
-    <h1>Login page</h1>
+interface Props {
+  classes: any;
+}
+
+const styles = (theme: Theme): StyleRules => ({
+  button: {
+    marginTop: theme.spacing(2)
+  },
+  navLink: {
+    display: "block",
+    marginTop: theme.spacing(1),
+    color: theme.palette.grey[500]
+  }
+});
+
+const LoginPage: React.FunctionComponent<Props> = ({ classes }) => (
+  <AuthContainer label="Login">
     <LoginComponent>
       {login => (
         <Formik
@@ -34,30 +50,31 @@ const LoginPage: React.FunctionComponent = () => (
         >
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
-              <Field
-                name="email"
-                placeholder="E-mail"
-                component={InputField}
-              ></Field>
+              <Field name="email" label="E-mail" component={InputField}></Field>
               <Field
                 name="password"
-                placeholder="Password"
+                label="Password"
                 type="password"
                 component={InputField}
               ></Field>
 
-              <button type="submit">Login</button>
+              <Button
+                className={classes.button}
+                fullWidth
+                size="large"
+                type="submit"
+              >
+                Login
+              </Button>
             </form>
           )}
         </Formik>
       )}
     </LoginComponent>
-    <p>
-      <Link href="/">
-        <a>Go home</a>
-      </Link>
-    </p>
-  </Layout>
+    <Link href="/register" className={classes.navLink} underline="none">
+      click here to register
+    </Link>
+  </AuthContainer>
 );
 
-export default LoginPage;
+export default withStyles(styles)(LoginPage);
