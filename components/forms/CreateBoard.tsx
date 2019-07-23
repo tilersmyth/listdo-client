@@ -11,7 +11,10 @@ import { StyleRules, withStyles } from "@material-ui/styles";
 
 import { InputField } from "../fields/InputField";
 import { CreateBoardSchema } from "../../utils/yup-validation";
-import { CreateBoardComponent } from "../../generated/apolloComponents";
+import {
+  CreateBoardComponent,
+  AllBoardsDocument
+} from "../../generated/apolloComponents";
 import { serverValidationErrors } from "../../utils/server-validation-errors";
 
 interface Props {
@@ -28,55 +31,71 @@ const styles = (theme: Theme): StyleRules => ({
 const CreateBoard: React.FunctionComponent<Props> = ({
   classes,
   closeDialog
-}) => (
-  <CreateBoardComponent>
-    {create => (
-      <Formik
-        onSubmit={async (data, { setErrors }) => {
-          try {
-            const test = await create({ variables: data });
-            console.log(test);
-          } catch (err) {
-            const errors = serverValidationErrors(err);
-            errors && setErrors(errors);
-          }
-        }}
-        initialValues={{
-          name: ""
-        }}
-        validationSchema={CreateBoardSchema}
-      >
-        {({ handleSubmit }) => {
-          return (
-            <form onSubmit={handleSubmit}>
-              <DialogContent>
-                <DialogContentText>
-                  Boards define relationships in which all parties are working
-                  towards common goals
-                </DialogContentText>
-                <Field
-                  autoFocus
-                  margin="dense"
-                  name="name"
-                  label="Enter board name"
-                  fullWidth
-                  component={InputField}
-                ></Field>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={closeDialog} className={classes.cancelBtn}>
-                  Cancel
-                </Button>
-                <Button type="submit" color="primary">
-                  Create
-                </Button>
-              </DialogActions>
-            </form>
-          );
-        }}
-      </Formik>
-    )}
-  </CreateBoardComponent>
-);
+}) => {
+  return (
+    <CreateBoardComponent>
+      {(create, { client }) => (
+        <Formik
+          onSubmit={async (data, { setErrors }) => {
+            try {
+              const newData = await create({ variables: data });
+
+              if (!newData || !newData.data) {
+                throw "new board error";
+              }
+
+              console.log(newData);
+
+              const oldData = client.readQuery({ query: AllBoardsDocument });
+
+              client.writeQuery({
+                query: AllBoardsDocument,
+                data: {
+                  allBoards: [...oldData.allBoards, newData.data.createBoard]
+                }
+              });
+            } catch (err) {
+              const errors = serverValidationErrors(err);
+              errors && setErrors(errors);
+            }
+          }}
+          initialValues={{
+            name: ""
+          }}
+          validationSchema={CreateBoardSchema}
+        >
+          {({ handleSubmit }) => {
+            return (
+              <form onSubmit={handleSubmit}>
+                <DialogContent>
+                  <DialogContentText>
+                    Boards define relationships in which all parties are working
+                    towards common goals
+                  </DialogContentText>
+                  <Field
+                    autoFocus
+                    margin="dense"
+                    name="name"
+                    label="Enter board name"
+                    fullWidth
+                    component={InputField}
+                  ></Field>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={closeDialog} className={classes.cancelBtn}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" color="primary">
+                    Create
+                  </Button>
+                </DialogActions>
+              </form>
+            );
+          }}
+        </Formik>
+      )}
+    </CreateBoardComponent>
+  );
+};
 
 export default withStyles(styles)(CreateBoard);

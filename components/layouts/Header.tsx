@@ -21,7 +21,7 @@ class Header extends React.Component<Props> {
     const { classes } = this.props;
 
     return (
-      <AppBar position="static" elevation={0}>
+      <AppBar position="static" elevation={1}>
         <Toolbar className={classes.appBar}>
           <Typography variant="h6" className={classes.title}>
             listdo

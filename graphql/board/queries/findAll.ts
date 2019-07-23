@@ -4,6 +4,8 @@ export const findAllBoardsQuery = gql`
   query AllBoards {
     allBoards {
       id
+      name
+      slug
     }
   }
 `;
