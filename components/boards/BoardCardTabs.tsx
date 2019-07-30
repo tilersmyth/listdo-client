@@ -3,8 +3,7 @@ import { Theme, Tabs, Tab } from "@material-ui/core";
 import { StyleRules, withStyles } from "@material-ui/styles";
 
 import { Board } from "./types";
-import TaskToList from "../tasks/TaskToList";
-import TaskFromList from "../tasks/TaskFromList";
+import TaskList from "../tasks/TaskList";
 
 interface Props {
   classes: any;
@@ -22,7 +21,7 @@ const styles = (theme: Theme): StyleRules => ({
   }
 });
 
-const BoardCardTabs: React.FunctionComponent<Props> = ({ classes }) => {
+const BoardCardTabs: React.FunctionComponent<Props> = ({ classes, board }) => {
   const [value, setValue] = React.useState(0);
 
   const changeTab = (_: any, newValue: any) => {
@@ -39,11 +38,11 @@ const BoardCardTabs: React.FunctionComponent<Props> = ({ classes }) => {
         className={classes.tabs}
         variant="fullWidth"
       >
-        <Tab label="Tasks" />
-        <Tab label="Pending" />
+        <Tab label="Inbox" />
+        <Tab label="Sent" />
       </Tabs>
-      {value === 0 && <TaskToList />}
-      {value === 1 && <TaskFromList />}
+      {value === 0 && <TaskList boardId={board.id} role="partner" />}
+      {value === 1 && <TaskList boardId={board.id} role="initiator" />}
     </React.Fragment>
   );
 };

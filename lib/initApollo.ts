@@ -8,7 +8,7 @@ import { setContext } from "apollo-link-context";
 import fetch from "isomorphic-unfetch";
 import { onError } from "apollo-link-error";
 
-import { isBrowser } from "./isBrowser";
+import { isBrowser } from "../utils/isBrowser";
 import Router from "next/router";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;

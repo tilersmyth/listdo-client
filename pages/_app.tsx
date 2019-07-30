@@ -18,6 +18,7 @@ class MyApp extends App<any> {
 
   render() {
     const { Component, pageProps, apolloClient } = this.props;
+
     return (
       <Container>
         <ThemeProvider theme={theme}>

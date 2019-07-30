@@ -5,7 +5,7 @@ import { getDataFromTree } from "react-apollo";
 import Head from "next/head";
 
 import initApollo from "./initApollo";
-import { isBrowser } from "./isBrowser";
+import { isBrowser } from "../utils/isBrowser";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import redirect from "./redirect";
 

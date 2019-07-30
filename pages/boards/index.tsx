@@ -4,6 +4,7 @@ import { LinearProgress, Typography } from "@material-ui/core";
 import { AllBoardsComponent } from "../../generated/apolloComponents";
 import AdminLayout from "../../components/layouts/Admin";
 import { BoardGrid } from "../../components/boards/BoardGrid";
+import { withAuth } from "../../components/Auth";
 
 const BoardPage: React.FunctionComponent = () => {
   return (
@@ -31,4 +32,4 @@ const BoardPage: React.FunctionComponent = () => {
   );
 };
 
-export default BoardPage;
+export default withAuth(BoardPage);

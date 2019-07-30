@@ -11,10 +11,7 @@ import { StyleRules, withStyles } from "@material-ui/styles";
 
 import { InputField } from "../fields/InputField";
 import { CreateBoardSchema } from "../../utils/yup-validation";
-import {
-  CreateBoardComponent,
-  AllBoardsDocument
-} from "../../generated/apolloComponents";
+import { CreateBoardComponent } from "../../generated/apolloComponents";
 import { serverValidationErrors } from "../../utils/server-validation-errors";
 
 interface Props {
@@ -34,7 +31,7 @@ const CreateBoard: React.FunctionComponent<Props> = ({
 }) => {
   return (
     <CreateBoardComponent>
-      {(create, { client }) => (
+      {create => (
         <Formik
           onSubmit={async (data, { setErrors }) => {
             try {
@@ -44,16 +41,7 @@ const CreateBoard: React.FunctionComponent<Props> = ({
                 throw "new board error";
               }
 
-              console.log(newData);
-
-              const oldData = client.readQuery({ query: AllBoardsDocument });
-
-              client.writeQuery({
-                query: AllBoardsDocument,
-                data: {
-                  allBoards: [...oldData.allBoards, newData.data.createBoard]
-                }
-              });
+              console.log("NEW BOARD", newData);
             } catch (err) {
               const errors = serverValidationErrors(err);
               errors && setErrors(errors);
