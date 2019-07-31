@@ -13,6 +13,7 @@ import { InputField } from "../fields/InputField";
 import { CreateBoardSchema } from "../../utils/yup-validation";
 import { CreateBoardComponent } from "../../generated/apolloComponents";
 import { serverValidationErrors } from "../../utils/server-validation-errors";
+import { Store } from "../../stores";
 
 interface Props {
   classes: any;
@@ -29,6 +30,7 @@ const CreateBoard: React.FunctionComponent<Props> = ({
   classes,
   closeDialog
 }) => {
+  const store = React.useContext(Store);
   return (
     <CreateBoardComponent>
       {create => (
@@ -41,7 +43,9 @@ const CreateBoard: React.FunctionComponent<Props> = ({
                 throw "new board error";
               }
 
-              console.log("NEW BOARD", newData);
+              store.boardListStore.addBoard(newData.data.createBoard);
+
+              closeDialog();
             } catch (err) {
               const errors = serverValidationErrors(err);
               errors && setErrors(errors);

@@ -5,8 +5,10 @@ import { AllBoardsComponent } from "../../generated/apolloComponents";
 import AdminLayout from "../../components/layouts/Admin";
 import { BoardGrid } from "../../components/boards/BoardGrid";
 import { withAuth } from "../../components/Auth";
+import { Store } from "../../stores";
 
 const BoardPage: React.FunctionComponent = () => {
+  const { boardListStore } = React.useContext(Store);
   return (
     <AdminLayout>
       <AllBoardsComponent>
@@ -25,7 +27,9 @@ const BoardPage: React.FunctionComponent = () => {
             return <Typography variant="h1">No boards yet</Typography>;
           }
 
-          return <BoardGrid boards={data.allBoards} />;
+          const boards = boardListStore.setBoards(data.allBoards);
+
+          return <BoardGrid boards={boards} />;
         }}
       </AllBoardsComponent>
     </AdminLayout>

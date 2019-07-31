@@ -6,6 +6,7 @@ export const findAllBoardsQuery = gql`
       id
       name
       slug
+      owner
     }
   }
 `;

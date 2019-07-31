@@ -2,7 +2,7 @@ import React from "react";
 import Router from "next/router";
 
 import { CurrentUserComponent } from "../generated/apolloComponents";
-import UserContext from "../stores/UserStore";
+import { Store } from "../stores";
 
 export const withAuth = <T extends Object>(
   C: React.ComponentClass<T> | React.FunctionComponent<T>
@@ -12,19 +12,19 @@ export const withAuth = <T extends Object>(
       return (
         <CurrentUserComponent>
           {({ data, error }) => (
-            <UserContext.Consumer>
-              {props => {
+            <Store.Consumer>
+              {({ userStore }) => {
                 if (error || !data || !data.currentUser) {
-                  props.setUser(null);
+                  userStore.setUser(null);
                   Router.replace("/login");
                   return;
                 }
 
-                props.setUser(data.currentUser);
+                userStore.setUser(data.currentUser);
 
                 return <C {...this.props} />;
               }}
-            </UserContext.Consumer>
+            </Store.Consumer>
           )}
         </CurrentUserComponent>
       );

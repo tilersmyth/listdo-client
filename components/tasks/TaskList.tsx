@@ -7,7 +7,6 @@ import {
   ListItemText,
   CircularProgress
 } from "@material-ui/core";
-
 import { StyleRules, withStyles } from "@material-ui/styles";
 
 import {
@@ -15,6 +14,7 @@ import {
   TaskDto
 } from "../../generated/apolloComponents";
 import TaskItem from "./TaskItem";
+import { Store } from "../../stores";
 
 interface Props {
   classes: any;
@@ -25,6 +25,8 @@ interface Props {
 const styles = (_: Theme): StyleRules => ({});
 
 const TaskList: React.FunctionComponent<Props> = ({ boardId, role }) => {
+  const { taskListStore } = React.useContext(Store);
+
   const NoTasksComponent = () => (
     <Typography variant="subtitle2" align="center">
       No {role === "initiator" ? "open sent tasks" : "open tasks"}
@@ -57,9 +59,9 @@ const TaskList: React.FunctionComponent<Props> = ({ boardId, role }) => {
             );
           }
 
-          return (
-            <TaskItem tasks={tasksByBoard as Array<TaskDto>} role={role} />
-          );
+          const tasks = taskListStore.setTasks(tasksByBoard as TaskDto[]);
+
+          return <TaskItem tasks={tasks} role={role} />;
         }}
       </TasksByBoardComponent>
     </List>

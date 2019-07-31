@@ -4,7 +4,7 @@ import Moment from "react-moment";
 
 import { StyleRules, withStyles } from "@material-ui/styles";
 import { EmailDto } from "../../generated/apolloComponents";
-import UserStore from "../../stores/UserStore";
+import { Store } from "../../stores";
 import TaskItemMembers from "./TaskItemMembers";
 
 interface Props {
@@ -15,11 +15,11 @@ interface Props {
 const styles = (_: Theme): StyleRules => ({});
 
 const TaskItemSecondary: React.FunctionComponent<Props> = ({ email, role }) => {
-  const { Me } = useContext(UserStore);
+  const { userStore } = useContext(Store);
 
   const recipients = email.members.filter(
     (member: any) =>
-      member.user.email !== Me.email && member.role !== "initiator"
+      member.user.email !== userStore.Me.email && member.role !== "initiator"
   );
 
   return (

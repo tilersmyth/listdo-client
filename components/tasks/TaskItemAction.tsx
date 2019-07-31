@@ -4,7 +4,7 @@ import SpeedDial from "@material-ui/lab/SpeedDial";
 
 import { StyleRules, withStyles } from "@material-ui/styles";
 import CheckBoxIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import OtherIcon from "@material-ui/icons/IndeterminateCheckBoxOutlined";
+import OtherIcon from "@material-ui/icons/AddBoxOutlined";
 import CompleteIcon from "@material-ui/icons/CheckBoxOutlined";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
@@ -12,6 +12,7 @@ import clsx from "clsx";
 
 interface Props {
   classes: any;
+  complete: () => void;
 }
 
 const styles = (theme: Theme): StyleRules => ({
@@ -43,9 +44,12 @@ const styles = (theme: Theme): StyleRules => ({
   }
 });
 
-const SpeedDialTest: React.FunctionComponent<Props> = ({ classes }) => {
+const SpeedDialTest: React.FunctionComponent<Props> = ({
+  classes,
+  complete
+}) => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(0);
+  const [icon, setIcon] = React.useState(0);
 
   const handleClose = () => {
     setOpen(false);
@@ -55,13 +59,17 @@ const SpeedDialTest: React.FunctionComponent<Props> = ({ classes }) => {
     setOpen(true);
   };
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
   const selectDial = (e: any) => {
-    setValue(e.currentTarget.value);
+    const { value } = e.currentTarget;
+    const iconType = Number(value);
+    setIcon(iconType);
     setOpen(false);
+
+    if (iconType === 1) {
+      complete();
+    } else if (iconType === 2) {
+      console.log("open dialog");
+    }
   };
 
   const actions = [
@@ -71,8 +79,8 @@ const SpeedDialTest: React.FunctionComponent<Props> = ({ classes }) => {
 
   const speedDialClassName = clsx(classes.speedDial, classes.directionRight);
 
-  const DialIcon = ({ type }: any) => {
-    switch (Number(type)) {
+  const DialIcon = ({ iconType }: any) => {
+    switch (iconType) {
       case 1:
         return <CompleteIcon fontSize="small" />;
       case 2:
@@ -89,7 +97,7 @@ const SpeedDialTest: React.FunctionComponent<Props> = ({ classes }) => {
         icon={
           <SpeedDialIcon
             className={classes.dialIcon}
-            icon={<DialIcon type={value} />}
+            icon={<DialIcon iconType={icon} />}
           />
         }
         ButtonProps={{
@@ -99,7 +107,7 @@ const SpeedDialTest: React.FunctionComponent<Props> = ({ classes }) => {
         }}
         className={speedDialClassName}
         onBlur={handleClose}
-        onClick={handleClick}
+        onClick={handleOpen}
         onClose={handleClose}
         onFocus={handleOpen}
         onMouseLeave={handleClose}
