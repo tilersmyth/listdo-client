@@ -1,7 +1,9 @@
 import * as React from "react";
-import { Typography, AppBar, Toolbar, Button } from "@material-ui/core";
+import { Typography, AppBar, Toolbar } from "@material-ui/core";
 import { withStyles, Theme, StyleRules } from "@material-ui/core/styles";
+
 import CreateBoard from "../dialogs/CreateBoard";
+import HeaderMenu from "./HeaderMenu";
 
 type Props = {
   classes: any;
@@ -27,7 +29,7 @@ class Header extends React.Component<Props> {
             listdo
           </Typography>
           <CreateBoard />
-          <Button color="inherit">Logout</Button>
+          <HeaderMenu />
         </Toolbar>
       </AppBar>
     );

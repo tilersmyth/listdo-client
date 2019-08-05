@@ -174,6 +174,8 @@ export type QueryTasksByBoardArgs = {
 };
 
 export type RegisterInput = {
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
   email: Scalars["String"];
   password: Scalars["String"];
 };
@@ -234,6 +236,8 @@ export type UpdateTaskStatusInput = {
 export type UserDto = {
   __typename?: "UserDto";
   id: Scalars["ID"];
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
   email: Scalars["String"];
 };
 
@@ -331,7 +335,16 @@ export type LoginMutation = { __typename?: "Mutation" } & {
   login: { __typename?: "UserDto" } & Pick<UserDto, "id" | "email">;
 };
 
+export type LogoutMutationVariables = {};
+
+export type LogoutMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "logout"
+>;
+
 export type RegisterMutationVariables = {
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
   email: Scalars["String"];
   password: Scalars["String"];
 };
@@ -343,13 +356,23 @@ export type RegisterMutation = { __typename?: "Mutation" } & {
 export type MeQueryVariables = {};
 
 export type MeQuery = { __typename?: "Query" } & {
-  me: Maybe<{ __typename?: "UserDto" } & Pick<UserDto, "id" | "email">>;
+  me: Maybe<
+    { __typename?: "UserDto" } & Pick<
+      UserDto,
+      "id" | "firstName" | "lastName" | "email"
+    >
+  >;
 };
 
 export type MeClientQueryVariables = {};
 
 export type MeClientQuery = { __typename?: "Query" } & {
-  me: Maybe<{ __typename?: "UserDto" } & Pick<UserDto, "id" | "email">>;
+  me: Maybe<
+    { __typename?: "UserDto" } & Pick<
+      UserDto,
+      "id" | "firstName" | "lastName" | "email"
+    >
+  >;
 };
 
 export const CreateBoardDocument = gql`
@@ -715,9 +738,64 @@ export function withLogin<TProps, TChildProps = {}>(
     ...operationOptions
   });
 }
+export const LogoutDocument = gql`
+  mutation Logout {
+    logout
+  }
+`;
+export type LogoutMutationFn = ReactApollo.MutationFn<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
+export type LogoutComponentProps = Omit<
+  ReactApollo.MutationProps<LogoutMutation, LogoutMutationVariables>,
+  "mutation"
+>;
+
+export const LogoutComponent = (props: LogoutComponentProps) => (
+  <ReactApollo.Mutation<LogoutMutation, LogoutMutationVariables>
+    mutation={LogoutDocument}
+    {...props}
+  />
+);
+
+export type LogoutProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<LogoutMutation, LogoutMutationVariables>
+> &
+  TChildProps;
+export function withLogout<TProps, TChildProps = {}>(
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    LogoutMutation,
+    LogoutMutationVariables,
+    LogoutProps<TChildProps>
+  >
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    LogoutMutation,
+    LogoutMutationVariables,
+    LogoutProps<TChildProps>
+  >(LogoutDocument, {
+    alias: "withLogout",
+    ...operationOptions
+  });
+}
 export const RegisterDocument = gql`
-  mutation Register($email: String!, $password: String!) {
-    register(input: { email: $email, password: $password }) {
+  mutation Register(
+    $firstName: String!
+    $lastName: String!
+    $email: String!
+    $password: String!
+  ) {
+    register(
+      input: {
+        firstName: $firstName
+        lastName: $lastName
+        email: $email
+        password: $password
+      }
+    ) {
       id
       email
     }
@@ -765,6 +843,8 @@ export const MeDocument = gql`
   query Me {
     me {
       id
+      firstName
+      lastName
       email
     }
   }
@@ -804,6 +884,8 @@ export const MeClientDocument = gql`
   query MeClient {
     me @client {
       id
+      firstName
+      lastName
       email
     }
   }
