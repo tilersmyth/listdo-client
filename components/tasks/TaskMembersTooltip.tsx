@@ -2,11 +2,11 @@ import * as React from "react";
 import { Theme, Tooltip, Fade, Typography } from "@material-ui/core";
 
 import { withStyles } from "@material-ui/styles";
-import { EmailMemberDto } from "../../apollo/generated-components";
+import { TasksByBoardQuery } from "../../apollo/generated-components";
 
 interface Props {
   children: any;
-  members: Array<EmailMemberDto>;
+  members: TasksByBoardQuery["tasksByBoard"][0]["email"]["members"];
 }
 
 const CustomTooltip = withStyles((theme: Theme) => ({

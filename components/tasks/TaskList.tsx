@@ -9,10 +9,7 @@ import {
 } from "@material-ui/core";
 import { StyleRules, withStyles } from "@material-ui/styles";
 
-import {
-  TasksByBoardComponent,
-  TaskDto
-} from "../../apollo/generated-components";
+import { TasksByBoardComponent } from "../../apollo/generated-components";
 import TaskItem from "./TaskItem";
 
 interface Props {
@@ -56,7 +53,7 @@ const TaskList: React.FunctionComponent<Props> = ({ boardId, role }) => {
             );
           }
 
-          return <TaskItem tasks={tasksByBoard as TaskDto[]} role={role} />;
+          return <TaskItem tasks={tasksByBoard} role={role} />;
         }}
       </TasksByBoardComponent>
     </List>

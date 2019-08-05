@@ -9,33 +9,21 @@ import {
 } from "@material-ui/core";
 
 import { StyleRules, withStyles } from "@material-ui/styles";
-import { TaskDto } from "../../apollo/generated-components";
+import { TasksByBoardQuery } from "../../apollo/generated-components";
 import TaskItemAction from "./actions/TaskItemAction";
 import TaskItemOpen from "./TaskItemOpen";
 import TaskItemSecondary from "./TaskItemSecondary";
 
 interface Props {
   classes: any;
-  tasks: Array<TaskDto>;
+  tasks: TasksByBoardQuery["tasksByBoard"];
   role: string;
 }
 
 const styles = (_: Theme): StyleRules => ({});
 
 const TaskItem: React.FunctionComponent<Props> = ({ tasks, role }) => {
-  const timeout: number = 300;
   const [taskId, setTaskId] = React.useState("");
-
-  const removeTask = (_: string) => {
-    // const taskIndex = tasks.findIndex((task: TaskDto) => task.id === id);
-    // tasks.splice(taskIndex, 1);
-    // taskListStore.setTasks(tasks);
-  };
-
-  const closeTask = (id: string) => {
-    setTaskId(id);
-    setTimeout(removeTask.bind(null, id), timeout);
-  };
 
   return (
     <React.Fragment>
@@ -45,12 +33,12 @@ const TaskItem: React.FunctionComponent<Props> = ({ tasks, role }) => {
             direction="left"
             in={task.id !== taskId}
             enter={false}
-            timeout={{ enter: 0, exit: timeout }}
+            timeout={{ enter: 0, exit: 300 }}
             mountOnEnter
             unmountOnExit
           >
             <ListItem>
-              <TaskItemAction taskId={task.id} closeTask={closeTask} />
+              <TaskItemAction taskId={task.id} removeTask={setTaskId} />
               <ListItemText
                 primary={
                   <Typography variant="subtitle2">

@@ -2,12 +2,12 @@ import * as React from "react";
 import { Theme } from "@material-ui/core";
 
 import { withStyles, StyleRules } from "@material-ui/styles";
-import { EmailMemberDto } from "../../apollo/generated-components";
+import { TasksByBoardQuery } from "../../apollo/generated-components";
 import TaskMembersTooltip from "./TaskMembersTooltip";
 
 interface Props {
   classes: any;
-  members: Array<EmailMemberDto>;
+  members: TasksByBoardQuery["tasksByBoard"][0]["email"]["members"];
   role: string;
 }
 

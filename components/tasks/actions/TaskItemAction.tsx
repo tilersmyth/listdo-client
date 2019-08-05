@@ -5,14 +5,15 @@ import { StyleRules, withStyles } from "@material-ui/styles";
 import TaskItemActionDial from "./TaskItemActionDial";
 import {
   UpdateTaskStatusComponent,
-  UpdateTaskStatusClientDocument
+  UpdateTaskStatusClientDocument,
+  UpdateTaskStatusMutation
 } from "../../../apollo/generated-components";
 import TaskOptionsDialog from "./TaskOptionsDialog";
 
 interface Props {
   classes: any;
   taskId: string;
-  closeTask: (id: string) => void;
+  removeTask: (id: string) => void;
 }
 
 const styles = (_: Theme): StyleRules => ({
@@ -25,7 +26,8 @@ const styles = (_: Theme): StyleRules => ({
 
 const TaskItemAction: React.FunctionComponent<Props> = ({
   classes,
-  taskId
+  taskId,
+  removeTask
 }) => {
   const [dialOpen, setDialOpen] = React.useState(false);
   const [icon, setIcon] = React.useState("");
@@ -44,6 +46,15 @@ const TaskItemAction: React.FunctionComponent<Props> = ({
   return (
     <UpdateTaskStatusComponent>
       {(status, { client }) => {
+        const updateStore = (
+          task: UpdateTaskStatusMutation["updateTaskStatus"]
+        ) => {
+          client.mutate({
+            variables: { task, status: { type: "closed" } },
+            mutation: UpdateTaskStatusClientDocument
+          });
+        };
+
         const handleComplete = async () => {
           try {
             setIcon("complete");
@@ -56,14 +67,10 @@ const TaskItemAction: React.FunctionComponent<Props> = ({
               throw Error("Error updating task status");
             }
 
+            removeTask(taskId);
             const task = update.data.updateTaskStatus;
-
-            client.mutate({
-              variables: { task, status: { type: "closed" } },
-              mutation: UpdateTaskStatusClientDocument
-            });
-
-            // closeTask(taskId);
+            // Allow for slide transition before updating store
+            setTimeout(() => updateStore(task), 300);
           } catch (err) {
             console.log("update status error", err);
           }

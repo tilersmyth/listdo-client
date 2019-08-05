@@ -3,11 +3,14 @@ import { Theme, Typography } from "@material-ui/core";
 import Moment from "react-moment";
 
 import { StyleRules, withStyles } from "@material-ui/styles";
-import { EmailDto, MeComponent } from "../../apollo/generated-components";
+import {
+  TasksByBoardQuery,
+  MeComponent
+} from "../../apollo/generated-components";
 import TaskItemMembers from "./TaskItemMembers";
 
 interface Props {
-  email: EmailDto;
+  email: TasksByBoardQuery["tasksByBoard"][0]["email"];
   role: string;
 }
 
