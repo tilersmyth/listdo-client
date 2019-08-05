@@ -2,7 +2,7 @@ import * as React from "react";
 import { Theme } from "@material-ui/core";
 
 import { withStyles, StyleRules } from "@material-ui/styles";
-import { EmailMemberDto } from "../../generated/apolloComponents";
+import { EmailMemberDto } from "../../apollo/generated-components";
 import TaskMembersTooltip from "./TaskMembersTooltip";
 
 interface Props {

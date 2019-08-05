@@ -17,6 +17,9 @@ export const findTasksByBoard = gql`
           date
         }
       }
+      status {
+        type
+      }
     }
   }
 `;

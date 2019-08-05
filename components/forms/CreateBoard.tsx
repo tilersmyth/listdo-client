@@ -11,9 +11,11 @@ import { StyleRules, withStyles } from "@material-ui/styles";
 
 import { InputField } from "../fields/InputField";
 import { CreateBoardSchema } from "../../utils/yup-validation";
-import { CreateBoardComponent } from "../../generated/apolloComponents";
+import {
+  CreateBoardComponent,
+  AddBoardDocument
+} from "../../apollo/generated-components";
 import { serverValidationErrors } from "../../utils/server-validation-errors";
-import { Store } from "../../stores";
 
 interface Props {
   classes: any;
@@ -30,10 +32,9 @@ const CreateBoard: React.FunctionComponent<Props> = ({
   classes,
   closeDialog
 }) => {
-  const store = React.useContext(Store);
   return (
     <CreateBoardComponent>
-      {create => (
+      {(create, { client }) => (
         <Formik
           onSubmit={async (data, { setErrors }) => {
             try {
@@ -43,7 +44,10 @@ const CreateBoard: React.FunctionComponent<Props> = ({
                 throw "new board error";
               }
 
-              store.boardListStore.addBoard(newData.data.createBoard);
+              client.mutate({
+                variables: { board: newData.data.createBoard },
+                mutation: AddBoardDocument
+              });
 
               closeDialog();
             } catch (err) {

@@ -5,7 +5,7 @@ import { Theme, Button } from "@material-ui/core";
 import { StyleRules, withStyles } from "@material-ui/styles";
 
 import { InputField } from "../components/fields/InputField";
-import { RegisterComponent } from "../generated/apolloComponents";
+import { RegisterComponent } from "../apollo/generated-components";
 import { RegisterSchema } from "../utils/yup-validation";
 import { serverValidationErrors } from "../utils/server-validation-errors";
 import AuthContainer from "../components/layouts/Auth";

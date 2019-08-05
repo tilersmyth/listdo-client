@@ -9,11 +9,10 @@ import {
 } from "@material-ui/core";
 
 import { StyleRules, withStyles } from "@material-ui/styles";
-import { TaskDto } from "../../generated/apolloComponents";
+import { TaskDto } from "../../apollo/generated-components";
 import TaskItemAction from "./actions/TaskItemAction";
 import TaskItemOpen from "./TaskItemOpen";
 import TaskItemSecondary from "./TaskItemSecondary";
-import { Store } from "../../stores";
 
 interface Props {
   classes: any;
@@ -26,12 +25,11 @@ const styles = (_: Theme): StyleRules => ({});
 const TaskItem: React.FunctionComponent<Props> = ({ tasks, role }) => {
   const timeout: number = 300;
   const [taskId, setTaskId] = React.useState("");
-  const { taskListStore } = React.useContext(Store);
 
-  const removeTask = (id: string) => {
-    const taskIndex = tasks.findIndex((task: TaskDto) => task.id === id);
-    tasks.splice(taskIndex, 1);
-    taskListStore.setTasks(tasks);
+  const removeTask = (_: string) => {
+    // const taskIndex = tasks.findIndex((task: TaskDto) => task.id === id);
+    // tasks.splice(taskIndex, 1);
+    // taskListStore.setTasks(tasks);
   };
 
   const closeTask = (id: string) => {

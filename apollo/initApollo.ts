@@ -10,6 +10,8 @@ import { onError } from "apollo-link-error";
 
 import { isBrowser } from "../utils/isBrowser";
 import Router from "next/router";
+import { typeDefs } from "./client-type-defs";
+import { resolvers } from "./resolvers";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
@@ -60,7 +62,9 @@ function create(initialState: any, { getToken, fetchOptions }: Options) {
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
     link: errorLink.concat(authLink.concat(httpLink)),
-    cache: new InMemoryCache().restore(initialState || {})
+    cache: new InMemoryCache().restore(initialState || {}),
+    typeDefs,
+    resolvers
   });
 }
 

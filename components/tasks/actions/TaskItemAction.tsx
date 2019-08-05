@@ -3,7 +3,11 @@ import { Theme, ListItemIcon } from "@material-ui/core";
 import { StyleRules, withStyles } from "@material-ui/styles";
 
 import TaskItemActionDial from "./TaskItemActionDial";
-import { UpdateTaskStatusComponent } from "../../../generated/apolloComponents";
+import {
+  UpdateTaskStatusComponent,
+  UpdateTaskStatusClientDocument
+} from "../../../apollo/generated-components";
+import TaskOptionsDialog from "./TaskOptionsDialog";
 
 interface Props {
   classes: any;
@@ -21,28 +25,25 @@ const styles = (_: Theme): StyleRules => ({
 
 const TaskItemAction: React.FunctionComponent<Props> = ({
   classes,
-  taskId,
-  closeTask
+  taskId
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [dialOpen, setDialOpen] = React.useState(false);
   const [icon, setIcon] = React.useState("");
+  const [dialogOpen, setDialogOpen] = React.useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const handleClose = () => setDialOpen(false);
+  const handleOpen = () => setDialOpen(true);
+  const handleDialogClose = () => setDialogOpen(false);
+  const dialogExited = () => setIcon("");
 
   const handleDialog = () => {
     setIcon("other");
-    console.log("open Dialog");
+    setDialogOpen(true);
   };
 
   return (
     <UpdateTaskStatusComponent>
-      {status => {
+      {(status, { client }) => {
         const handleComplete = async () => {
           try {
             setIcon("complete");
@@ -55,23 +56,37 @@ const TaskItemAction: React.FunctionComponent<Props> = ({
               throw Error("Error updating task status");
             }
 
-            closeTask(taskId);
+            const task = update.data.updateTaskStatus;
+
+            client.mutate({
+              variables: { task, status: { type: "closed" } },
+              mutation: UpdateTaskStatusClientDocument
+            });
+
+            // closeTask(taskId);
           } catch (err) {
             console.log("update status error", err);
           }
         };
 
         return (
-          <ListItemIcon className={classes.listItem}>
-            <TaskItemActionDial
-              open={open}
-              icon={icon}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
-              handleComplete={handleComplete}
-              handleDialog={handleDialog}
+          <React.Fragment>
+            <TaskOptionsDialog
+              open={dialogOpen}
+              handleClose={handleDialogClose}
+              handleExit={dialogExited}
             />
-          </ListItemIcon>
+            <ListItemIcon className={classes.listItem}>
+              <TaskItemActionDial
+                open={dialOpen}
+                icon={icon}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
+                handleComplete={handleComplete}
+                handleDialog={handleDialog}
+              />
+            </ListItemIcon>
+          </React.Fragment>
         );
       }}
     </UpdateTaskStatusComponent>

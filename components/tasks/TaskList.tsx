@@ -12,9 +12,8 @@ import { StyleRules, withStyles } from "@material-ui/styles";
 import {
   TasksByBoardComponent,
   TaskDto
-} from "../../generated/apolloComponents";
+} from "../../apollo/generated-components";
 import TaskItem from "./TaskItem";
-import { Store } from "../../stores";
 
 interface Props {
   classes: any;
@@ -25,8 +24,6 @@ interface Props {
 const styles = (_: Theme): StyleRules => ({});
 
 const TaskList: React.FunctionComponent<Props> = ({ boardId, role }) => {
-  const { taskListStore } = React.useContext(Store);
-
   const NoTasksComponent = () => (
     <Typography variant="subtitle2" align="center">
       No {role === "initiator" ? "open sent tasks" : "open tasks"}
@@ -59,9 +56,7 @@ const TaskList: React.FunctionComponent<Props> = ({ boardId, role }) => {
             );
           }
 
-          const tasks = taskListStore.setTasks(tasksByBoard as TaskDto[]);
-
-          return <TaskItem tasks={tasks} role={role} />;
+          return <TaskItem tasks={tasksByBoard as TaskDto[]} role={role} />;
         }}
       </TasksByBoardComponent>
     </List>

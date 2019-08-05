@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 import MuiLink, { LinkProps as MuiLinkProps } from "@material-ui/core/Link";
-import { Omit } from "../generated/apolloComponents";
+import { Omit } from "../apollo/generated-components";
 
 type NextComposedProps = React.AnchorHTMLAttributes<HTMLAnchorElement> &
   NextLinkProps;

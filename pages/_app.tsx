@@ -4,7 +4,7 @@ import { ApolloProvider } from "react-apollo";
 import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import withApollo from "../lib/withApollo";
+import withApollo from "../apollo/withApollo";
 import theme from "../material/Theme";
 
 class MyApp extends App<any> {

@@ -5,10 +5,7 @@ import { Button } from "@material-ui/core";
 import { withStyles, Theme, StyleRules } from "@material-ui/core/styles";
 
 import { InputField } from "../components/fields/InputField";
-import {
-  LoginComponent,
-  CurrentUserDocument
-} from "../generated/apolloComponents";
+import { LoginComponent } from "../apollo/generated-components";
 import { LoginSchema } from "../utils/yup-validation";
 import { serverValidationErrors } from "../utils/server-validation-errors";
 import AuthContainer from "../components/layouts/Auth";
@@ -32,7 +29,7 @@ const styles = (theme: Theme): StyleRules => ({
 const LoginPage: React.FunctionComponent<Props> = ({ classes }) => (
   <AuthContainer label="Login">
     <LoginComponent>
-      {(login, { client }) => (
+      {login => (
         <Formik
           validateOnBlur={false}
           validateOnChange={false}
@@ -43,13 +40,6 @@ const LoginPage: React.FunctionComponent<Props> = ({ classes }) => (
               if (!user || !user.data || !user.data.login) {
                 throw Error("User authentication error");
               }
-
-              const setCurrentUser = { currentUser: user.data.login };
-
-              client.writeQuery({
-                query: CurrentUserDocument,
-                data: setCurrentUser
-              });
 
               Router.push("/boards");
             } catch (err) {

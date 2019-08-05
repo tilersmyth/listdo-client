@@ -2,7 +2,7 @@ import * as React from "react";
 import { Theme, Tooltip, Fade, Typography } from "@material-ui/core";
 
 import { withStyles } from "@material-ui/styles";
-import { EmailMemberDto } from "../../generated/apolloComponents";
+import { EmailMemberDto } from "../../apollo/generated-components";
 
 interface Props {
   children: any;

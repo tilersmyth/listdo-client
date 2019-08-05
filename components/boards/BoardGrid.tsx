@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Grid, Theme } from "@material-ui/core";
-import { observer } from "mobx-react-lite";
 
 import { StyleRules, withStyles } from "@material-ui/styles";
 import { BoardCard } from "./BoardCard";
-import { BoardDto } from "../../generated/apolloComponents";
+import { BoardDto } from "../../apollo/generated-components";
 
 interface Props {
   classes: any;
@@ -17,7 +16,7 @@ const styles = (_: Theme): StyleRules => ({
   }
 });
 
-const C: React.FunctionComponent<Props> = observer(({ classes, boards }) => {
+const C: React.FunctionComponent<Props> = ({ classes, boards }) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -31,6 +30,6 @@ const C: React.FunctionComponent<Props> = observer(({ classes, boards }) => {
       </Grid>
     </div>
   );
-});
+};
 
 export const BoardGrid = withStyles(styles)(C);

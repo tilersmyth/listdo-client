@@ -1,4 +1,4 @@
-import { BoardDto } from "../../generated/apolloComponents";
+import { BoardDto } from "../../apollo/generated-components";
 
 export type Board = { __typename?: "BoardDto" } & Pick<
   BoardDto,

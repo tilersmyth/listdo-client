@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { Theme } from "@material-ui/core";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import { StyleRules, withStyles } from "@material-ui/styles";
-import OtherIcon from "@material-ui/icons/AddBoxOutlined";
+import MoreIcon from "@material-ui/icons/AddBoxOutlined";
 import CompleteIcon from "@material-ui/icons/CheckBoxOutlined";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
@@ -46,7 +46,7 @@ const styles = (theme: Theme): StyleRules => ({
 
 const actions = [
   { icon: <CompleteIcon />, name: "Complete", value: "complete" },
-  { icon: <OtherIcon />, name: "Other", value: "other" }
+  { icon: <MoreIcon />, name: "More", value: "more" }
 ];
 
 const TaskItemActionDial: React.FunctionComponent<Props> = ({
@@ -72,10 +72,8 @@ const TaskItemActionDial: React.FunctionComponent<Props> = ({
       color: "inherit"
     }}
     className={clsx(classes.speedDial, classes.directionRight)}
-    onBlur={handleClose}
     onClick={handleOpen}
     onClose={handleClose}
-    onFocus={handleOpen}
     onMouseLeave={handleClose}
     open={open}
     direction="right"

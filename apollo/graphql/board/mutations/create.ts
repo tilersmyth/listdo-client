@@ -10,3 +10,14 @@ export const createBoardMutation = gql`
     }
   }
 `;
+
+export const addBoardMutation = gql`
+  mutation AddBoard($board: Board!) {
+    addBoard(board: $board) @client {
+      id
+      name
+      owner
+      slug
+    }
+  }
+`;
